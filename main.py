@@ -52,6 +52,7 @@ def get_card_string(card):
     return (f'[{card["value"]}] of {card["suit"]}')
 
 
+# Returns (formatted) all of the cards in the hand and the score for the hand
 def get_hand_string(hand):
     for card in hand:
         print(get_card_string(card))
@@ -59,6 +60,7 @@ def get_hand_string(hand):
         f'score(high aces): {hand_score_high(hand)} score(low aces): {hand_score_low(hand)}')
 
 
+# This scores the hand assuming any aces are worth 11 and not 1
 def hand_score_high(hand):
     score = 0
     for card in hand:
@@ -66,6 +68,7 @@ def hand_score_high(hand):
     return score
 
 
+# This scores the hand assuming any aces are worth 1 and not 11
 def hand_score_low(hand):
     score = 0
     for card in hand:
@@ -73,7 +76,7 @@ def hand_score_low(hand):
     return score
 
 
-# This will return the numeric score of the card it takes in
+# This will return the numeric score of the card it takes in(aces high)
 def get_high_numeric_value(value):
     switcher = {
         'Two': 2,
@@ -93,7 +96,7 @@ def get_high_numeric_value(value):
     return switcher.get(value)
 
 
-# This will return the numeric score of the card it takes in
+# This will return the numeric score of the card it takes in (aces low)
 def get_low_numeric_value(value):
     switcher = {
         'Two': 2,
@@ -127,6 +130,7 @@ def new_game_prompt():
         new_game_prompt()
 
 
+# Once the game is over, this function figures out who the winner is, congratulations them, and sends them back to new_game_prompt()
 def conclusion(player_score, dealer_score, player_hand, dealer_hand):
     if dealer_score >= player_score and dealer_score <= 21:
         input(f'House wins with {dealer_score} (enter)')
@@ -141,6 +145,7 @@ def conclusion(player_score, dealer_score, player_hand, dealer_hand):
     input('Please hit enter to continue')
 
 
+# Once the player has decided to stay, this is the logic that will handle the computer(dealer)
 def dealer_logic(player_hand, dealer_hand, deck, player_score):
     dealer_score = 0
     while dealer_score <= player_score and dealer_score < 17:
@@ -166,6 +171,7 @@ def dealer_logic(player_hand, dealer_hand, deck, player_score):
     new_game_prompt()
 
 
+# This tells the application what to do based on user input during their turn
 def decision_handler(decision, player_hand, deck, dealer_hand):
     print(f'you inputted {decision}')
     if decision.lower() == 'h' or decision.lower() == 'hit':
@@ -184,6 +190,7 @@ def decision_handler(decision, player_hand, deck, dealer_hand):
         print('Wrong command, try again...')
 
 
+# Checks if the hand is busted (over 21) or not
 def is_busted(hand):
     if hand_score_low(hand) > 21:
         return True
